@@ -1,0 +1,47 @@
+# Bancos de teste do TootegaMDB-MCP / TootegaMDB-MCP test databases.
+# Portas presas em 127.0.0.1 e fora do padrão para não colidir com instalações locais.
+# Uso (WSL):  docker compose -f docker/compose.yml up -d
+name: tmdb-test
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: tmdb
+      POSTGRES_PASSWORD: Tmdb_Test_123
+      POSTGRES_DB: tmdb
+    ports: ["127.0.0.1:55432:5432"]
+
+  mysql:
+    image: mysql:8.4
+    environment:
+      MYSQL_ROOT_PASSWORD: Tmdb_Test_123
+      MYSQL_DATABASE: tmdb
+      MYSQL_USER: tmdb
+      MYSQL_PASSWORD: Tmdb_Test_123
+    ports: ["127.0.0.1:53306:3306"]
+
+  mariadb:
+    image: mariadb:11
+    environment:
+      MARIADB_ROOT_PASSWORD: Tmdb_Test_123
+      MARIADB_DATABASE: tmdb
+      MARIADB_USER: tmdb
+      MARIADB_PASSWORD: Tmdb_Test_123
+    ports: ["127.0.0.1:53307:3306"]
+
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: Tmdb_Test_123
+      MSSQL_PID: Developer
+    ports: ["127.0.0.1:51433:1433"]
+
+  oracle:
+    image: gvenzl/oracle-free:23-slim-faststart
+    environment:
+      ORACLE_PASSWORD: Tmdb_Test_123
+      APP_USER: tmdb
+      APP_USER_PASSWORD: Tmdb_Test_123
+    ports: ["127.0.0.1:51521:1521"]

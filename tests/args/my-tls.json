@@ -1,0 +1,1 @@
+{"connection":"my-tls","sql":"show session status where variable_name in ('Ssl_version', 'Ssl_cipher')"}

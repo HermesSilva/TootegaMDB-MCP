@@ -1,0 +1,131 @@
+{
+  "name": "tootega-mdb",
+  "displayName": "%ext.displayName%",
+  "description": "%ext.description%",
+  "version": "1.0.0",
+  "publisher": "HermesSilva",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/HermesSilva/TootegaMDB-MCP.git",
+    "directory": "extension"
+  },
+  "homepage": "https://github.com/HermesSilva/TootegaMDB-MCP#readme",
+  "bugs": {
+    "url": "https://github.com/HermesSilva/TootegaMDB-MCP/issues"
+  },
+  "engines": {
+    "vscode": "^1.101.0"
+  },
+  "categories": [
+    "AI",
+    "Chat",
+    "Other"
+  ],
+  "keywords": [
+    "mcp",
+    "database",
+    "postgresql",
+    "mysql",
+    "sql server",
+    "oracle",
+    "copilot",
+    "agent",
+    "sql"
+  ],
+  "icon": "media/icon.png",
+  "main": "./extension.js",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "contributes": {
+    "mcpServerDefinitionProviders": [
+      {
+        "id": "tootegaMdb",
+        "label": "Tootega Multi-Database MCP"
+      }
+    ],
+    "commands": [
+      {
+        "command": "tootegaMdb.configure",
+        "title": "%cmd.configure%",
+        "category": "Tootega Multi-Database MCP",
+        "icon": "$(database)"
+      },
+      {
+        "command": "tootegaMdb.copyMcpConfig",
+        "title": "%cmd.copyMcpConfig%",
+        "category": "Tootega Multi-Database MCP"
+      },
+      {
+        "command": "tootegaMdb.registerClaudeCode",
+        "title": "%cmd.registerClaudeCode%",
+        "category": "Tootega Multi-Database MCP"
+      }
+    ],
+    "walkthroughs": [
+      {
+        "id": "tootegaMdb.start",
+        "title": "%wt.title%",
+        "description": "%wt.description%",
+        "steps": [
+          {
+            "id": "configure",
+            "title": "%wt.configure.title%",
+            "description": "%wt.configure.description%",
+            "media": {
+              "markdown": "walkthrough/configure.md"
+            },
+            "completionEvents": [
+              "onCommand:tootegaMdb.configure"
+            ]
+          },
+          {
+            "id": "ask",
+            "title": "%wt.ask.title%",
+            "description": "%wt.ask.description%",
+            "media": {
+              "markdown": "walkthrough/ask.md"
+            }
+          }
+        ]
+      }
+    ],
+    "configuration": {
+      "title": "Tootega Multi-Database MCP",
+      "properties": {
+        "tootegaMdb.language": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "en",
+            "pt"
+          ],
+          "enumDescriptions": [
+            "%cfg.language.auto%",
+            "English",
+            "Português"
+          ],
+          "default": "auto",
+          "description": "%cfg.language%"
+        },
+        "tootegaMdb.serverPath": {
+          "type": "string",
+          "default": "",
+          "scope": "machine",
+          "description": "%cfg.serverPath%"
+        },
+        "tootegaMdb.registerClaudeCode": {
+          "type": "boolean",
+          "default": true,
+          "scope": "machine",
+          "description": "%cfg.registerClaudeCode%"
+        },
+        "tootegaMdb.verbose": {
+          "type": "boolean",
+          "default": false,
+          "description": "%cfg.verbose%"
+        }
+      }
+    }
+  }
+}

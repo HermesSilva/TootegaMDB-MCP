@@ -1,0 +1,5 @@
+# O pacote leva só o necessário para rodar: host, tela, textos, mídia e binários.
+.vscode/**
+**/*.map
+**/*.tmp
+node_modules/**

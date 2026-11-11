@@ -1,0 +1,5 @@
+# Fim de linha LF em tudo: os scripts .sh e o Makefile rodam no WSL e em containers.
+* text=auto eol=lf
+*.ps1 text eol=crlf
+*.gif binary
+*.png binary

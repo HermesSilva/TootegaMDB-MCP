@@ -1,0 +1,1 @@
+{"connection":"ms-tls","sql":"select encrypt_option, protocol_type, client_net_address from sys.dm_exec_connections where session_id = @@spid"}

@@ -1,0 +1,1 @@
+{"connection":"ora","sql":"select 7 as n, 'ab' as t from dual"}

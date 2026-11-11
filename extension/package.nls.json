@@ -1,0 +1,18 @@
+{
+  "ext.displayName": "Tootega Multi-Database MCP",
+  "ext.description": "MCP server for PostgreSQL, MySQL, SQL Server and Oracle. Native C core with zero dependencies, read-only by default.",
+  "wt.title": "Get started with Tootega Multi-Database MCP",
+  "wt.description": "Connect your AI agent to PostgreSQL, MySQL, SQL Server and Oracle in two steps.",
+  "wt.configure.title": "Add a database connection",
+  "wt.configure.description": "Open the connections screen, add a connection and test it.\n[Configure Connections](command:tootegaMdb.configure)",
+  "wt.ask.title": "Ask the agent about your data",
+  "wt.ask.description": "Open the chat in agent mode and ask a question about your database.\n[Open Chat](command:workbench.action.chat.open)",
+  "cmd.configure": "Configure Connections",
+  "cmd.copyMcpConfig": "Copy MCP Configuration for Other Clients",
+  "cmd.registerClaudeCode": "Register with Claude Code",
+  "cfg.registerClaudeCode": "Keep the server registered in Claude Code (user scope) automatically, so it is available there without any manual step. Needs the Claude Code CLI.",
+  "cfg.language":"Language of the interface and of the MCP tool descriptions.",
+  "cfg.language.auto": "Follow the VS Code language (Portuguese or English)",
+  "cfg.serverPath": "Path to the tmdb executable. Leave empty to use the one bundled with the extension.",
+  "cfg.verbose": "Make the MCP server write a diagnostic log (see the server output in VS Code)."
+}

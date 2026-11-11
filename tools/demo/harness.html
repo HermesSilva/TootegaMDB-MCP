@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<!-- Bancada da tela de configuração fora do VS Code.
+     Carrega os MESMOS arquivos da extensão (media/config.css, config.js...) com as
+     variáveis de tema do VS Code e um host simulado. Serve para testar a tela e
+     para gravar as animações do Marketplace.
+     Parâmetros: ?lang=pt|en  &theme=dark|light  &data=empty|sample -->
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Tootega Multi-Database MCP</title>
+<style>
+  html.dark {
+    --vscode-foreground: #cccccc; --vscode-editor-background: #1f1f1f; --vscode-descriptionForeground: #9d9d9d;
+    --vscode-panel-border: #2b2b2b; --vscode-focusBorder: #0078d4; --vscode-badge-background: #616161;
+    --vscode-badge-foreground: #f8f8f8; --vscode-list-hoverBackground: #2a2d2e;
+    --vscode-list-activeSelectionBackground: #04395e; --vscode-list-activeSelectionForeground: #ffffff;
+    --vscode-input-background: #313131; --vscode-input-foreground: #cccccc; --vscode-input-border: #3c3c3c;
+    --vscode-input-placeholderForeground: #989898; --vscode-dropdown-background: #313131;
+    --vscode-dropdown-foreground: #cccccc; --vscode-button-background: #0078d4; --vscode-button-foreground: #ffffff;
+    --vscode-button-hoverBackground: #026ec1; --vscode-button-secondaryBackground: #313131;
+    --vscode-button-secondaryForeground: #cccccc; --vscode-button-secondaryHoverBackground: #3c3c3c;
+    --vscode-textLink-foreground: #4daafc; --vscode-errorForeground: #f85149; --vscode-testing-iconPassed: #73c991;
+    --vscode-editorWarning-foreground: #cca700; --vscode-toolbar-hoverBackground: rgba(90, 93, 94, .31);
+    --vscode-textBlockQuote-background: #2b2b2b; --vscode-icon-foreground: #cccccc;
+    --vscode-progressBar-background: #0078d4;
+    color-scheme: dark;
+  }
+  html.light {
+    --vscode-foreground: #3b3b3b; --vscode-editor-background: #ffffff; --vscode-descriptionForeground: #6a6a6a;
+    --vscode-panel-border: #e5e5e5; --vscode-focusBorder: #005fb8; --vscode-badge-background: #cccccc;
+    --vscode-badge-foreground: #3b3b3b; --vscode-list-hoverBackground: #f2f2f2;
+    --vscode-list-activeSelectionBackground: #e8e8e8; --vscode-list-activeSelectionForeground: #000000;
+    --vscode-input-background: #ffffff; --vscode-input-foreground: #3b3b3b; --vscode-input-border: #cecece;
+    --vscode-input-placeholderForeground: #767676; --vscode-dropdown-background: #ffffff;
+    --vscode-dropdown-foreground: #3b3b3b; --vscode-button-background: #005fb8; --vscode-button-foreground: #ffffff;
+    --vscode-button-hoverBackground: #0258a8; --vscode-button-secondaryBackground: #e5e5e5;
+    --vscode-button-secondaryForeground: #3b3b3b; --vscode-button-secondaryHoverBackground: #cccccc;
+    --vscode-textLink-foreground: #005fb8; --vscode-errorForeground: #c72e0f; --vscode-testing-iconPassed: #388a34;
+    --vscode-editorWarning-foreground: #9a6700; --vscode-toolbar-hoverBackground: rgba(184, 184, 184, .31);
+    --vscode-textBlockQuote-background: #f8f8f8; --vscode-icon-foreground: #3b3b3b;
+    --vscode-progressBar-background: #005fb8;
+    color-scheme: light;
+  }
+  html { --vscode-font-family: "Segoe UI", system-ui, sans-serif; --vscode-font-size: 13px;
+         --vscode-editor-font-family: Consolas, "Courier New", monospace; }
+</style>
+<link rel="stylesheet" href="../../extension/media/config.css">
+</head>
+<body>
+<div id="app"></div>
+<script>
+  (function () {
+    const q = new URLSearchParams(location.search);
+    const lang = q.get('lang') === 'pt' ? 'pt' : 'en';
+    document.documentElement.className = q.get('theme') === 'light' ? 'light' : 'dark';
+
+    const sample = [
+      { id: 's1', type: 'postgres', name: 'erp-prod', environment: 'production', host: 'db.internal', port: 5432,
+        database: 'erp', user: 'report_ro', readOnly: true, sslMode: 'verify-full' },
+      { id: 's2', type: 'postgres', name: 'erp-dev', environment: 'development', host: 'localhost', port: 5432,
+        database: 'erp_dev', user: 'dev', readOnly: false, sslMode: 'prefer' },
+      { id: 's3', type: 'mssql', name: 'legacy-billing', environment: 'staging', host: 'sql01', port: 1433,
+        database: 'Billing', user: 'svc_reader', readOnly: true, sslMode: 'require' },
+    ];
+    let saved = q.get('data') === 'sample' ? sample : [];
+    const hasPassword = {};
+    saved.forEach((c) => { hasPassword[c.id] = true; });
+
+    /* Versões que o teste "devolve", por banco — como o servidor real responderia. */
+    const VERSIONS = {
+      postgres: 'PostgreSQL 17.11', mysql: 'MySQL 8.4.6',
+      mssql: 'Microsoft SQL Server 2022 (16.0.4215)', oracle: 'Oracle AI Database 26ai Free',
+    };
+    window.__posted = [];
+    const reply = (m, delay) => setTimeout(() => window.postMessage(m, '*'), delay || 0);
+
+    window.acquireVsCodeApi = () => ({
+      postMessage(m) {
+        window.__posted.push(m);
+        if (m.type === 'ready') reply({ type: 'init', lang, connections: saved, hasPassword });
+        else if (m.type === 'save') {
+          saved = m.connections;
+          Object.keys(m.passwords || {}).forEach((id) => { hasPassword[id] = true; });
+          (m.cleared || []).forEach((id) => { delete hasPassword[id]; });
+          reply({ type: 'saved', lang, connections: saved, hasPassword }, 150);
+        } else if (m.type === 'test') {
+          const c = m.connection;
+          const fail = window.__failTest;
+          reply(fail
+            ? { type: 'testResult', id: c.id, ok: false, error: fail }
+            : { type: 'testResult', id: c.id, ok: true, version: VERSIONS[c.type], elapsedMs: 9 + (c.name.length * 7) % 30 },
+            window.__testDelay === undefined ? 900 : window.__testDelay);
+        }
+      },
+    });
+  })();
+</script>
+<script src="../../extension/media/strings.js"></script>
+<script src="../../extension/media/flavors.js"></script>
+<script src="../../extension/media/config.js"></script>
+</body>
+</html>

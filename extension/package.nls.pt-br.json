@@ -1,0 +1,18 @@
+{
+  "ext.displayName": "Tootega Multi-Database MCP",
+  "ext.description": "Servidor MCP para PostgreSQL, MySQL, SQL Server e Oracle. Núcleo nativo em C sem dependências, somente leitura por padrão.",
+  "wt.title": "Comece a usar o Tootega Multi-Database MCP",
+  "wt.description": "Conecte o seu agente de IA a PostgreSQL, MySQL, SQL Server e Oracle em dois passos.",
+  "wt.configure.title": "Inclua uma conexão de banco",
+  "wt.configure.description": "Abra a tela de conexões, inclua uma conexão e teste.\n[Configurar Conexões](command:tootegaMdb.configure)",
+  "wt.ask.title": "Pergunte ao agente sobre os seus dados",
+  "wt.ask.description": "Abra o chat em modo agente e faça uma pergunta sobre o seu banco.\n[Abrir Chat](command:workbench.action.chat.open)",
+  "cmd.configure": "Configurar Conexões",
+  "cmd.copyMcpConfig": "Copiar Configuração MCP para Outros Clientes",
+  "cmd.registerClaudeCode": "Registrar no Claude Code",
+  "cfg.registerClaudeCode": "Mantém o servidor registrado no Claude Code (escopo do usuário) automaticamente, para ficar disponível lá sem nenhum passo manual. Requer o CLI do Claude Code.",
+  "cfg.language":"Idioma da interface e das descrições das ferramentas MCP.",
+  "cfg.language.auto": "Seguir o idioma do VS Code (português ou inglês)",
+  "cfg.serverPath": "Caminho do executável tmdb. Deixe vazio para usar o que vem com a extensão.",
+  "cfg.verbose": "Faz o servidor MCP escrever um log de diagnóstico (veja a saída do servidor no VS Code)."
+}

@@ -1,0 +1,14 @@
+{
+  "name": "tmdb-demo-tools",
+  "private": true,
+  "description": "Ferramentas de desenvolvimento: teste da tela e gravação das animações do Marketplace. Não fazem parte da extensão.",
+  "scripts": {
+    "test": "node ui-test.js",
+    "record": "node record.js"
+  },
+  "devDependencies": {
+    "gifenc": "^1.0.3",
+    "playwright-core": "^1.48.0",
+    "pngjs": "^7.0.0"
+  }
+}

@@ -1,0 +1,1 @@
+{"connection":"ora","sql":"select rowid, id, longo, nome, criado, bl from tmdb_t where id in (1, 2, 5000) order by id","max_rows":3}

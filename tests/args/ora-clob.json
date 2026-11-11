@@ -1,0 +1,1 @@
+{"connection":"ora","sql":"select to_clob('abc') as c, 7 as n from dual"}
