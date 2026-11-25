@@ -1,52 +1,56 @@
 # Tootega Multi-Database MCP
 
-Servidor MCP para PostgreSQL, MySQL / MariaDB, SQL Server e Oracle, com núcleo em C puro
-(sem bibliotecas de terceiros, linkado estaticamente) e uma extensão do VS Code para configurar
-as conexões. A página do produto está em [`extension/README.md`](extension/README.md); os
-requisitos, em [`docs/REQUISITOS.md`](docs/REQUISITOS.md).
+**English** | [Português](README.pt-br.md)
 
-## Organização
+MCP server for PostgreSQL, MySQL / MariaDB, SQL Server and Oracle, with a pure C core
+(no third-party libraries, statically linked) and a VS Code extension to configure the
+connections. Install it from the
+[Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=HermesSilva.tootega-mdb).
+The product page is [`extension/README.md`](extension/README.md); the
+requirements are in [`docs/REQUISITOS.md`](docs/REQUISITOS.md).
 
-| Pasta | Conteúdo |
-|-------|----------|
-| `core/` | O executável `tmdb`: protocolos dos quatro bancos, criptografia, TLS 1.3, servidor MCP |
-| `extension/` | Extensão do VS Code (JavaScript puro): tela de conexões e registro do servidor MCP |
-| `docker/` | Bancos de teste (`compose.yml`) e imagem de build (`build.Dockerfile`) |
-| `scripts/` | Build de distribuição, empacotamento e atalho de desenvolvimento |
-| `tests/` | Testes de integração contra bancos reais |
-| `tools/` | Bancada da tela, gravador das animações, medição de desempenho |
+## Layout
 
-## Compilar e testar
+| Folder | Contents |
+|--------|----------|
+| `core/` | The `tmdb` executable: the four database protocols, cryptography, TLS 1.3, MCP server |
+| `extension/` | VS Code extension (plain JavaScript): connections screen and MCP server registration |
+| `docker/` | Test databases (`compose.yml`) and build image (`build.Dockerfile`) |
+| `scripts/` | Distribution build, packaging and development shortcut |
+| `tests/` | Integration tests against real databases |
+| `tools/` | Screen test bench, animation recorder, performance measurement |
 
-Tudo roda no WSL; nada precisa ser instalado no Windows além do Node (para a extensão).
+## Build and test
+
+Everything runs in WSL; nothing needs to be installed on Windows besides Node (for the extension).
 
 ```bash
-docker compose -f docker/compose.yml up -d     # bancos de teste
-bash scripts/dev.sh pg mysql mariadb mssql oracle mcp   # compila e roda os testes
+docker compose -f docker/compose.yml up -d     # test databases
+bash scripts/dev.sh pg mysql mariadb mssql oracle mcp   # build and run the tests
 bash tests/tls-setup.sh && bash tests/tls-setup-mssql.sh && bash tests/tls.sh   # TLS 1.3
-make -C core debug                             # build com ASan/UBSan (core/build/tmdb-debug)
-bash scripts/build-dist.sh                     # binários estáticos em dist/ (soma 1 ao BUILD)
+make -C core debug                             # build with ASan/UBSan (core/build/tmdb-debug)
+bash scripts/build-dist.sh                     # static binaries in dist/ (adds 1 to BUILD)
 ```
 
-No Windows (PowerShell):
+On Windows (PowerShell):
 
 ```powershell
-node tools\demo\ui-test.js      # interação da tela de conexões
-node tools\demo\host-test.js    # host da extensão com a API do VS Code simulada
-node tools\demo\record.js       # regrava as animações da página
-pwsh scripts\package.ps1        # gera dist\tootega-mdb-<versão>.<build>.vsix
+node tools\demo\ui-test.js      # connections screen interaction
+node tools\demo\host-test.js    # extension host with a simulated VS Code API
+node tools\demo\record.js       # re-records the page animations
+pwsh scripts\package.ps1        # produces dist\tootega-mdb-<version>.<build>.vsix
 ```
 
-## Versão e build
+## Version and build
 
-A versão do produto fica em `core/src/tm.h` (`TM_VERSION_BASE`) e em `extension/package.json`.
-O arquivo `BUILD` guarda o número do build: `scripts/build-dist.sh` soma um a cada execução e o
-número entra no executável (`tmdb version` → `1.0.0.N`) e no nome do `.vsix`.
+The product version lives in `core/src/tm.h` (`TM_VERSION_BASE`) and in `extension/package.json`.
+The `BUILD` file holds the build number: `scripts/build-dist.sh` adds one on every run, and the
+number goes into the executable (`tmdb version` → `1.0.0.N`) and into the `.vsix` file name.
 
-## Diagnóstico
+## Diagnostics
 
 ```bash
-tmdb selftest                                  # vetores de teste de toda a criptografia
-tmdb tlsprobe HOST PORTA verify-full [ca.pem]  # só o aperto de mão TLS, com validação
-tmdb --config arquivo.json call query '{"connection":"x","sql":"select 1"}'
+tmdb selftest                                  # test vectors for all the cryptography
+tmdb tlsprobe HOST PORT verify-full [ca.pem]   # TLS handshake only, with validation
+tmdb --config file.json call query '{"connection":"x","sql":"select 1"}'
 ```
