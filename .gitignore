@@ -6,3 +6,6 @@ extension/bin/
 # ferramentas de desenvolvimento
 node_modules/
 *.vsix
+
+# Cockpit: estado local da ferramenta, não versionar
+.cockpit/
